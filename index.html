@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Lê Hoàng Nam | Bot Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: #020617; color: #e2e8f0; font-family: 'Quicksand', sans-serif; }
+        .admin-rgb {
+            background: linear-gradient(90deg, #ff0000, #00ffff, #ff00ff, #ff0000);
+            background-size: 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rgb 5s linear infinite;
+        }
+        @keyframes rgb { 0% { background-position: 0%; } 100% { background-position: 400%; } }
+        .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+    <div class="max-w-6xl mx-auto">
+        <header class="glass rounded-3xl p-6 mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-2xl font-black admin-rgb uppercase">Admin Lê Hoàng Nam Tool</h1>
+                <p class="text-sm text-gray-500">Hệ thống điều khiển Bot Angela v4.0.1</p>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="startBot()" class="bg-green-600 px-6 py-2 rounded-xl font-bold hover:bg-green-500 transition">KÍCH HOẠT BOT</button>
+                <a href="https://discord.gg/PpzMWvcpa" target="_blank" class="bg-[#5865F2] px-6 py-2 rounded-xl font-bold flex items-center gap-2"><i class="fab fa-discord"></i> DISCORD</a>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <div class="glass p-6 rounded-3xl border-b-4 border-cyan-500">
+                <h3 class="text-xl font-bold mb-4 text-cyan-400"><i class="fas fa-comment-slash mr-2"></i> Spam System</h3>
+                <div class="space-y-3">
+                    <input id="spam_id" type="text" placeholder="ID Kênh Discord" class="w-full bg-slate-900 border border-slate-700 p-3 rounded-xl outline-none">
+                    <input id="spam_file" type="text" placeholder="Tên tệp nội dung (VD: spam.txt)" class="w-full bg-slate-900 border border-slate-700 p-3 rounded-xl outline-none">
+                    <button onclick="control('spam')" class="w-full bg-cyan-600 py-3 rounded-xl font-bold hover:shadow-[0_0_15px_#0891b2]">CHẠY SPAM SIUUUU</button>
+                </div>
+            </div>
+
+            <div class="glass p-6 rounded-3xl border-b-4 border-purple-500">
+                <h3 class="text-xl font-bold mb-4 text-purple-400"><i class="fas fa-microphone-lines mr-2"></i> Voice Control</h3>
+                <div class="space-y-3">
+                    <input id="vc_id" type="text" placeholder="ID Kênh Voice" class="w-full bg-slate-900 border border-slate-700 p-3 rounded-xl outline-none">
+                    <select id="vol" class="w-full bg-slate-900 border border-slate-700 p-3 rounded-xl outline-none">
+                        <option value="normal">Âm lượng chuẩn</option>
+                        <option value="max">Âm lượng Max (Phá phòng)</option>
+                    </select>
+                    <button onclick="control('nhac')" class="w-full bg-purple-600 py-3 rounded-xl font-bold">TREO TIẾP ÂM</button>
+                </div>
+            </div>
+
+            <div class="glass p-6 rounded-3xl border-b-4 border-red-500">
+                <h3 class="text-xl font-bold mb-4 text-red-400"><i class="fas fa-user-gear mr-2"></i> Quản Trị Viên</h3>
+                <div class="space-y-3">
+                    <input id="new_admin" type="text" placeholder="ID người dùng mới" class="w-full bg-slate-900 border border-slate-700 p-3 rounded-xl outline-none">
+                    <button onclick="control('addadmin')" class="w-full bg-red-600 py-3 rounded-xl font-bold">THÊM QUYỀN ADMIN</button>
+                    <a href="https://www.f1684.ceo/?id=561390556" target="_blank" class="block w-full text-center bg-white text-black py-3 rounded-xl font-bold mt-2">NẠP TIỀN HỆ THỐNG</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function startBot() {
+            fetch('/run_bot', {method: 'POST'})
+            .then(res => res.json())
+            .then(data => alert(data.status));
+        }
+
+        function control(type) {
+            const data = { type: type };
+            fetch('/send_command', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(data => alert(data.status));
+        }
+    </script>
+</body>
+</html>
